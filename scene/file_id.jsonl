@@ -1,0 +1,12 @@
+{"writingPrompts_valid": "file-FhmjSPpoHamuys20eMFg3cUR"}
+{"writingPrompts_test": "file-uRk9Yx1NFDliLe0Ilucp0EQ0"}
+{"writingPrompts_train": "file-Z3BzUBTgOEm7aPKd2BcND7Ov"}
+{"reedsyPrompts_valid": "file-EGYbxlcKe6ilyx4LP3r9MZ2v"}
+{"reedsyPrompts_test": "file-jV6urR0TAdjAcNyMHmZ4XjhX"}
+{"reedsyPrompts_train": "file-sGwgLUuA8MRT1SzdvpXVCc7Q"}
+{"booksum_train": "file-vMyNXQMbs43bUnqpfUNWpAJR"}
+{"booksum_valid": "file-mGe1ZUd9eBXeQsn2OLsfuBUx"}
+{"booksum_test": "file-XmMVTpuLhDwIu89qiuIKAGwt"}
+{"writingPrompts_reedsyPrompts_booksum_train": "file-fFy18X12V4rXWTFHWHioN7uz"}
+{"writingPrompts_reedsyPrompts_booksum_valid": "file-ECmvAYiIoUoSh4gNjt44gyJ5"}
+{"writingPrompts_reedsyPrompts_booksum_test": "file-aFZ2cYlmODVbAalwmUzjUkVC"}
