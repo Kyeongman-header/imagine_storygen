@@ -26,7 +26,7 @@ def integrator(dataset_list):
     
         with jsonlines.open(os.path.join(os.path.dirname(current_dir), "dataset", name + "_" + t + ".jsonl"), mode='w') as f:
             f.write_all(_lines)
-        with jsonlines.open(os.path.join(os.path.dirname(current_dir), "dataset", name + "_" + t + "._points.jsonl"), mode='w') as f:
+        with jsonlines.open(os.path.join(os.path.dirname(current_dir), "dataset", name + "_" + t + "_points.jsonl"), mode='w') as f:
             f.write_all(_point_lines)
         
 
