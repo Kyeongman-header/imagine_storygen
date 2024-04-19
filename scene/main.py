@@ -7,11 +7,12 @@ from nltk.tokenize import word_tokenize
 import time
 import os
 import jsonlines
+from datetime import datetime
 
 current_dir = os.path.abspath(__file__)
 
-def story_generation(num=10,finetune=False,gpt_modelname="gpt-3.5-turbo",dataset="None",control_mode=False,
-    skip_pe=False,skip_mp=False,skip_sw=False,skip_ce=False,skip_pk=False,skip_cp=False,load_mistral_model_name="None"):
+def story_generation(ver=str(1),num=10,finetune=False,gpt_modelname="gpt-3.5-turbo",dataset="None",control_mode=False,
+    skip_pe=False,skip_mp=False,skip_sw=False,skip_ce=False,skip_pk=False,skip_cp=False,load_mistral_model_name="mistralai/Mistral-7B-v0.1",file_name="test"):
     whole_generations=[]
     fixed_points=[]
     no_fixed=True
@@ -316,15 +317,17 @@ def story_generation(num=10,finetune=False,gpt_modelname="gpt-3.5-turbo",dataset
 
         
         whole_generations=[{"plot_points" : story_generator.plot_points, "main_plot":story_generator.plot, "events" : story_generator.events, 
-        "scenes" : story_generator.scenes_information, "demo_stories" : st, "demo_summaries" : sm, "critisicm" : story_generator.past_ver_criticisms, "final_stories":fst, "final_summaries" : fsm}]
+        "scenes" : story_generator.scenes_information, "demo_stories" : st, "demo_summaries" : sm, "critisicm" : story_generator.past_ver_criticisms, 
+        "final_stories":fst, "final_summaries" : fsm, "golden_label_stories" : fixed_points[n]['stories'] if no_fixed is False else "Not_given", 
+        "golden_label_summaries" : fixed_points[n]['summaries'] if no_fixed is False else "Not_given",}]
         print(whole_generations)
     
         
-        if os.path.exists(current_dir+"results/openai_eval_result.jsonl"):
+        if os.path.exists(current_dir+"results/"+filename+"/generation_outputs_" + ver + ".jsonl"):
             mode="a"
         else:
             mode="w"
-        with jsonlines.open(os.path.join(os.path.dirname(current_dir), 'results/openai_eval_result.jsonl'), mode="a") as f:
+        with jsonlines.open(os.path.join(os.path.dirname(current_dir), "results/"+filename+"/generation_outputs_" + ver + ".jsonl"), mode=mode) as f:
             f.write_all(whole_generations)
 
         input()
@@ -379,7 +382,7 @@ if __name__ == "__main__":
     parser.add_argument("-dataset", "--dataset",default="None", action="store")
     parser.add_argument("-control_mode", "--control_mode",default=False, action="store_true")
     parser.add_argument("-num", "--num", type=int, default=10,)
-    parser.add_argument("-load_mistral_model_name", "--load_mistral_model_name", default="None",action="store")
+    parser.add_argument("-load_mistral_model_name", "--load_mistral_model_name", default="mistralai/Mistral-7B-v0.1",action="store")
 
     parser.add_argument("-skip_pe", "--skip_pe",default=False, action="store_true")
     parser.add_argument("-skip_mp", "--skip_mp",default=False, action="store_true")
@@ -390,6 +393,16 @@ if __name__ == "__main__":
 
 
     args = parser.parse_args()
+    file_name='_'.join([f"{key}={value}" for key, value in args.__dict__.items()])
 
-    story_generation(num=args.num, finetune=args.finetune,gpt_modelname=args.model_name,dataset=args.dataset,control_mode=args.control_mode,
-    skip_pe=args.skip_pe,skip_mp=args.skip_mp,skip_sw=args.skip_sw,skip_ce=args.skip_ce,skip_pk=args.skip_pk,skip_cp=args.skip_cp, load_mistral_model_name=args.load_mistral_model_name)
+    ver=1
+    if os.path.exists(current_dir+"results/"+filename):
+        for (path, d, files) in os.walk(current_dir+"results/"+filename):
+            ver=len(d)+1
+    
+    ver=str(ver)
+    print("result file will be the name of ")
+    print(current_dir+"results/"+filename + "/generation_outputs_" + ver + ".jsonl")
+    
+    story_generation(ver=ver,num=args.num, finetune=args.finetune,gpt_modelname=args.model_name,dataset=args.dataset,control_mode=args.control_mode,
+    skip_pe=args.skip_pe,skip_mp=args.skip_mp,skip_sw=args.skip_sw,skip_ce=args.skip_ce,skip_pk=args.skip_pk,skip_cp=args.skip_cp, load_mistral_model_name=args.load_mistral_model_name,file_name=file_name)
